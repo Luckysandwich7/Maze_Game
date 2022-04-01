@@ -13,9 +13,9 @@ Usage:
 - `python maze.py 20` (square maze 20x20)
 
 Contributors:
-Ryan Alvord - 
-Innocent Hove - 
-Davi Vale - 
+Ryan Alvord - Created and setup the code
+Innocent Hove - seperated the code into class files
+Davi Vale - reviewed and added comments and adjusted text for better functionality
 
 Example (don't worry, the lines look solid on the command line):
 
