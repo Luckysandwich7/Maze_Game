@@ -7,6 +7,7 @@ try:
     }
 
     def _get_key():
+        print(" ")
         char = getch()
         # Arrow keys are returned as two bytes, starting with 224.
         if ord(char) == 224:

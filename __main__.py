@@ -1,7 +1,6 @@
 import random
 
 from maze import Maze
-from credits import Credit
 
 # Easy to read representation for each cardinal direction.
 N, S, W, E = ('n', 's', 'w', 'e')
@@ -57,15 +56,10 @@ class MazeGame(object):
             if direction not in current_cell:
                 player = (player[0] + difx, player[1] + dify)
 
-        console.display('You win!')
+        console.display('You win! \n \n Credits: \n Ryan Alvord \n Innocent Hove \n Davi do Vale')
         console.get_key()
         return True
 
-    message = "You Win!"
-
-    credits = Credit()
-    message.set_text_end(credits.getCredits())
-    credits.add_actor("messages", message)
 
 if __name__ == '__main__':
     import sys
