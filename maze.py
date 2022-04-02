@@ -1,58 +1,15 @@
-# -*- coding: utf-8 -*-
-import random
-
+from cell import Cell
 # Easy to read representation for each cardinal direction.
 N, S, W, E = ('n', 's', 'w', 'e')
 
-class Cell(object):
-    """
-    Class for each individual cell. Knows only its position and which walls are
-    still standing.
-    """
-    def __init__(self, x, y, walls):
-        self.x = x
-        self.y = y
-        self.walls = set(walls)
 
-    def __repr__(self):
-        # <15, 25 (es  )>
-        return '<{}, {} ({:4})>'.format(self.x, self.y, ''.join(sorted(self.walls)))
 
-    def __contains__(self, item):
-        # N in cell
-        return item in self.walls
+# -*- coding: utf-8 -*-
+import random
 
-    def is_full(self):
-        """
-        Returns True if all walls are still standing.
-        """
-        return len(self.walls) == 4
 
-    def _wall_to(self, other):
-        """
-        Returns the direction to the given cell from the current one.
-        Must be one cell away only.
-        """
-        assert abs(self.x - other.x) + abs(self.y - other.y) == 1, '{}, {}'.format(self, other)
-        if other.y < self.y:
-            return N
-        elif other.y > self.y:
-            return S
-        elif other.x < self.x:
-            return W
-        elif other.x > self.x:
-            return E
-        else:
-            assert False
 
-    def connect(self, other):
-        """
-        Removes the wall between two adjacent cells.
-        """
-        other.walls.remove(other._wall_to(self))
-        self.walls.remove(self._wall_to(other))
-
-class Maze(object):
+class Maze:
     """
     Maze class containing full board and maze generation algorithms.
     """
@@ -250,76 +207,3 @@ class Maze(object):
         return m
                     
 
-class MazeGame(object):
-    """
-    Class for interactively playing random maze games.
-    """
-    def __init__(self, maze):
-        self.maze = maze or Maze.generate()
-
-    def _get_random_position(self):
-        """
-        Returns a random position on the maze.
-        """
-        return (random.randrange(0, self.maze.width),
-                random.randrange(0, self.maze.height))
-
-    def _display(self, pos, value):
-        """
-        Displays a value on the screen from an x and y maze positions.
-        """
-        x, y = pos
-        # Double x position because displayed maze is double-wide.
-        console.set_display(y * 2 + 1, x * 4 + 2, value)
-
-    def play(self):
-        """
-        Starts an interactive game on this maze, with random starting and goal
-        positions. Returns True if the user won, or False if she quit the game
-        by pressing "q".
-        """
-        player = self._get_random_position()
-        target = self._get_random_position()
-
-        while player != target:
-            console.display(str(self.maze))
-            self._display(player, '@')
-            self._display(target, '$')
-
-            key = console.get_valid_key(['up', 'down', 'left', 'right', 'q'])
-
-            if key == 'q':
-                return False
-
-            direction, difx, dify = {'up': (N, 0, -1),
-                                     'down': (S, 0, 1),
-                                     'left': (W, -1, 0),
-                                     'right': (E, 1, 0)}[key]
-
-            current_cell = self.maze[player]
-            if direction not in current_cell:
-                player = (player[0] + difx, player[1] + dify)
-
-        console.display('You win!')
-        console.get_key()
-        return True
-
-if __name__ == '__main__':
-    import sys
-    if len(sys.argv) > 1:
-        width = int(sys.argv[1])
-        if len(sys.argv) > 2:
-            height = int(sys.argv[2])
-        else:
-            height = width
-    else:
-        width = 20
-        height = 10
-
-    import console
-    try:
-        while MazeGame(Maze.generate(width, height)).play(): pass
-    except:
-        import traceback
-        traceback.print_exc(file=open('error_log.txt', 'a'))
-        
